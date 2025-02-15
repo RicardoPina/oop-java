@@ -9,7 +9,7 @@ public class AccountDatabase {
     public void remove(Account account) {}//replace it with the last item
     public boolean withdraw(AccountNumber number, double amount) {}
     public void deposit(AccountNumber number, double amount) {}
-    public void printArchive() //print closed accounts
+    public void printArchive(){} //print closed accounts
     public void printByBranch() {}
     public void printByHolder() {}
     public void printByType() {}

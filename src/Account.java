@@ -7,7 +7,7 @@ public class Account implements Comparable<Account>{
         //to update balance
     }
 
-    public void deposit(doublea amount){
+    public void deposit(double amount){
         //to update the balance
     }
 }
