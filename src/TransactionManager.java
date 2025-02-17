@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class TransactionManager {
-    private final AccountDatabase database = AccountDatabase.getInstance();
+    private final AccountDatabase database = new AccountDatabase();
     // Default constructor
     public TransactionManager(){
     }
@@ -11,7 +11,7 @@ public class TransactionManager {
     }
 
     public void run() {
-        System.out.println("System is up and running.");
+        System.out.println("Transaction Manager is running.");
         // start the scanner
         Scanner scanner = new Scanner(System.in);
         // initiate variable to store the input
@@ -27,12 +27,18 @@ public class TransactionManager {
             }
         }
         System.out.println("Collection Manager terminated.");
+        scanner.close();
     }
 
     private void processCommand(String[] tokens){
         String input = tokens[0].trim();
-        Commands command = null;
-        command = Commands.valueOf(input);
+        Commands command;
+        try {
+            command = Commands.valueOf(input);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid command!");
+            return;
+        }
         // implement the switch cases
             switch (command) {
                 case O:
@@ -80,23 +86,49 @@ public class TransactionManager {
 private void openAccount(String[] tokens){
     //The token might be in lowercase, upper case or any combination.
     // add if statements to add messages for incorrect input
-    String accountType = tokens[1].trim().toLowerCase();
-    String branchType = tokens[2].trim().toLowerCase();
+    String accountType = tokens[1].trim().toUpperCase();
+    String branchType = tokens[2].trim().toUpperCase();
     String firstName = tokens[3].trim();
     String lastName = tokens[4].trim();
     String dob = tokens[5].trim();
     String amount = tokens[6].trim();
+
+    // Deposit amount shoud be more tan x if x
     double depositAmount = Double.parseDouble(amount);
 
-    AccountType type = AccountType.valueOf(accountType);
-    Branch branch = Branch.valueOf(branchType);
-    /////////////////THis is the code im trying to fix///////////////////////////////////////
-    Date date = new Date(dob);
-    /////////////////////////////////////////////////////////
+    AccountType type;
+    Branch branch;
+    Date date;
+
+    try {
+        type = AccountType.valueOf(accountType);
+    } catch (IllegalArgumentException e) {
+        System.out.println("Invalid account type!");
+        return;
+    }
+
+    try {
+        branch = Branch.valueOf(branchType);
+    } catch (IllegalArgumentException e) {
+        System.out.println("Invalid branch type!");
+        return;
+    }
+
+    try {
+        date = new Date(dob);
+        if (!date.isValid()) {
+            System.out.println("Invalid date of birth!");
+            return;
+        }
+    } catch (IllegalArgumentException e) {
+        System.out.println("Invalid date format!");
+        return;
+    }
+
     Profile newPerson = new Profile(firstName, lastName, date);
     AccountNumber accountNumber = new AccountNumber(branch, type);
     Account newAccount = new Account(accountNumber, newPerson, depositAmount);
-    AccountDatabase.getInstance().add(newAccount);
+    database.add(newAccount);
     System.out.println("Account opened: " + newAccount);
 }
 
@@ -110,15 +142,15 @@ private void closeAccount(String[] tokens) {
         String accountNumberString = tokens[1].trim();
         AccountNumber accountNum = new AccountNumber(accountNumberString);
         //OVERLOAD THE METHODS TO MAKE IT WORK
-        Account accountToClose = AccountDatabase.getInstance().getAccount(accountNum);
+        Account accountToClose = database.getAccount(accountNum);
 
         if (accountToClose == null) {
             System.out.println("Account not found.");
             return;
         }
         //OVERLOAD THE METHODS TO MAKE IT WORK
-        System.out.println("Account to close" + accountToClose);
-        AccountDatabase.getInstance().removeAccount(accountToClose);  // which should also archive i
+        System.out.println(accountToClose);
+        database.removeAccount(accountToClose);  // which should also archive i
 
         System.out.println("Account [" + accountNumberString + "] closed.");
     }
@@ -144,7 +176,45 @@ private void closeAccount(String[] tokens) {
     }
 }
 
-private void withdrawProcess(String[] tokens){}
+private void withdrawProcess(String[] tokens){
+    if (tokens.length < 3) {
+        System.out.println("Missing data for withdrawal!");
+        return;
+    }
+    String accountNumberString = tokens[1].trim();
+    String amountString = tokens[2].trim();
+    double amount;
+    try {
+        amount = Double.parseDouble(amountString);
+        if (amount <= 0) {
+            System.out.println(amount + " withdrawal amount cannot be 0 or negative.");
+            return;
+        }
+    } catch (NumberFormatException e) {
+        System.out.println("For input string: " + amountString + " - not a valid amount.");
+        return;
+    }
+
+    AccountNumber accountNum = new AccountNumber(accountNumberString);
+    Account account = database.getAccount(accountNum);
+    if (account == null) {
+        System.out.println(accountNumberString + " does not exist.");
+        return;
+    }
+
+    AccountType initialType = account.getNumber().getType();
+    boolean success = database.withdraw(accountNum, amount);
+    if (success) {
+        AccountType finalType = account.getNumber().getType();
+        if (initialType == AccountType.MONEYMARKET && finalType == AccountType.SAVINGS) {
+            System.out.printf("%s is downgraded to SAVINGS - $%.2f withdrawn from %s%n", accountNumberString, amount, accountNumberString);
+        } else {
+            System.out.printf("$%.2f withdrawn from %s%n", amount, accountNumberString);
+        }
+    } else {
+        System.out.printf("Withdrawal of $%.2f from account [%s] failed.%n", amount, accountNumberString);
+    }
+}
 
 private void depositProcess(String[] tokens){}
 

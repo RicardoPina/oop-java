@@ -37,13 +37,13 @@ public class Archive {
     }
 
     public static void main(String[] args) {
-        AccountDatabase database = AccountDatabase.getInstance(); // Get the AccountDatabase instance
+        AccountDatabase database = new AccountDatabase(); // Get the AccountDatabase instance
         //Archive archive = new Archive(); // You can still create an Archive instance for testing, but it's not strictly necessary for this test
 
         // Sample Account objects (replace with your actual Account creation)
-        Account acc1 = new Account(new AccountNumber(Branch.edison, AccountType.checking), new Profile("Doe", "John", new Date(2000, 1, 1)), 100);
-        Account acc2 = new Account(new AccountNumber(Branch.bridgewater, AccountType.savings), new Profile("Smith", "Jane", new Date(1995, 5, 10)), 200);
-        Account acc3 = new Account(new AccountNumber(Branch.piscataway, AccountType.savings), new Profile("Lee", "David", new Date(1998, 8, 15)), 300);
+        Account acc1 = new Account(new AccountNumber(Branch.EDISON, AccountType.CHECKING), new Profile("Doe", "John", new Date(2000, 1, 1)), 100);
+        Account acc2 = new Account(new AccountNumber(Branch.BRIDGEWATER, AccountType.SAVINGS), new Profile("Smith", "Jane", new Date(1995, 5, 10)), 200);
+        Account acc3 = new Account(new AccountNumber(Branch.PISCATAWAY, AccountType.SAVINGS), new Profile("Lee", "David", new Date(1998, 8, 15)), 300);
 
         // Add accounts to the database FIRST
         database.add(acc1);
@@ -58,7 +58,7 @@ public class Archive {
         database.printArchive(); // Print the archive through the database
 
         // Test case for an empty archive (you can test this by removing all accounts and then printing)
-        Account acc4 = new Account(new AccountNumber(Branch.edison, AccountType.checking), new Profile("Test", "Account", new Date(2001, 1, 1)), 100);
+        Account acc4 = new Account(new AccountNumber(Branch.EDISON, AccountType.CHECKING), new Profile("Test", "Account", new Date(2001, 1, 1)), 100);
         database.add(acc4);
         database.removeAccount(acc4.getNumber());
 

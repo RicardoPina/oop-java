@@ -7,10 +7,6 @@ import java.util.Random;
 public class AccountNumber implements Comparable<AccountNumber>
 {
     private static final int SEED = 9999;
-    private static final int RANDOM_DIGITS = 4;
-    private static final int MIN_RANDOM = 1000;
-    private static final int MAX_RANDOM = 9999;
-
     private Branch branch;
     private AccountType type;
     private String number;
@@ -26,12 +22,12 @@ public class AccountNumber implements Comparable<AccountNumber>
 
     public AccountNumber(String numberToSearch) {
         if (numberToSearch.length() != 9) {
-            throw new IllegalArgumentException("Invalid account number format.");
+            return; // invalid account number
         }
         String branchCode = numberToSearch.substring(0, 3);
         this.branch = Branch.fromBranchCode(branchCode);
         if (this.branch == null) {
-            throw new IllegalArgumentException("Invalid branch code.");
+            return; // invalid branch code
         }
         String typeCode = numberToSearch.substring(3, 5);
         this.type = AccountType.fromCode(typeCode);
@@ -43,7 +39,9 @@ public class AccountNumber implements Comparable<AccountNumber>
 
     private String generateRandomNumber()
     {
-        Random random = new Random();
+        Random random = new Random(SEED);
+        int MIN_RANDOM = 1000;
+        int MAX_RANDOM = 9999;
         int randNum = random.nextInt((MAX_RANDOM - MIN_RANDOM) + 1) + MIN_RANDOM;
         return String.valueOf(randNum);
     }
@@ -76,7 +74,11 @@ public class AccountNumber implements Comparable<AccountNumber>
         return this.toString().equals(that.toString());
     }
 
-
+    public AccountType setType(AccountType type) {
+        AccountType oldType = this.type;
+        this.type = type;
+        return oldType;
+    }
     public Branch getBranch()
     {
         return branch;

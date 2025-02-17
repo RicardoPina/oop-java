@@ -33,13 +33,18 @@ public class Account implements Comparable<Account>
      * @return
      */
 
-    public boolean withdraw(double amount) {
+    public void withdraw(double amount) {
         if (amount > 0 && balance >= amount) {
             balance -= amount;
+        } else {
+            throw new IllegalArgumentException("Insufficient balance or invalid amount.");
         }
-        return false;
     }
-
+    public void downgradeAccountType() {
+        if (number.getType() == AccountType.MONEYMARKET && balance < 2000) {
+            number.setType(AccountType.SAVINGS);
+        }
+    }
     /**
      * checks if two accounts are equal based on their account numbers */
 

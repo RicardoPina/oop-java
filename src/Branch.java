@@ -4,11 +4,11 @@
 
 public enum Branch
 {
-    edison("100", "08817", "Middlesex"),
-    bridgewater("200", "08807", "Somerset"),
-    princeton("300", "08542", "Mercer"),
-    piscataway("400", "08854", "Middlesex"),
-    warren("500", "07057", "Somerset");
+    EDISON("100", "08817", "Middlesex"),
+    BRIDGEWATER("200", "08807", "Somerset"),
+    PRINCETON("300", "08542", "Mercer"),
+    PISCATAWAY("400", "08854", "Middlesex"),
+    WARREN("500", "07057", "Somerset");
 
     private final String branchCode;
     private final String zip;

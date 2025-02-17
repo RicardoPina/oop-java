@@ -2,7 +2,6 @@
  * represents a date with year, month, and day.
  * implements Comparable for sorting dates.
  * includes a method to check if a date is valid */
-import java.util.Calendar;
 import java.util.StringTokenizer;
 public class Date implements Comparable<Date>
 {
@@ -29,16 +28,16 @@ public class Date implements Comparable<Date>
     public Date(String dob) {
         int[] dateParts = parseDate(dob); // Call the parsing helper method
         if (dateParts == null) {
-            throw new IllegalArgumentException("Invalid date format: " + dob); // Or handle the error as you see fit
+            System.out.println("DOB invalid: " + dob + "is not a valid calendar date!");
         }
 
         this.month = dateParts[0];
         this.day = dateParts[1];
         this.year = dateParts[2];
 
-        int print = this.year;
+        //int print = this.year;
         if (!isValid()) { // Validate after parsing
-            throw new IllegalArgumentException("Invalid date: " + dob);
+            System.out.println("DOB invalid: " + dob + "is not a valid calendar date!");
         }
        }
 

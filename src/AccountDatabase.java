@@ -4,10 +4,10 @@
  * @author Ricardo Pina
  */
 public class AccountDatabase {
-    private static AccountDatabase instance; // Singleton instance
-    private Account [] accounts;
+    private Account[] accounts;
     private int size;
-    private Archive archive; //a linked list of closed account
+    private Archive archive; // a linked list of closed accounts
+
     private static final int NOT_FOUND = -1;
     private static final int INITIAL_CAPACITY = 4;
     private static final int CAPACITY_INCREMENT = 4;
@@ -18,14 +18,7 @@ public class AccountDatabase {
         this.archive = new Archive();
     }
 
-    public static AccountDatabase getInstance() {
-        if (instance == null) {
-            instance = new AccountDatabase();
-        }
-        return instance;
-    }
-
-    private int find(Account account) { // Private find method
+    private int find(Account account) {
         for (int i = 0; i < size; i++) {
             if (accounts[i] != null && accounts[i].equals(account)) {
                 return i;
@@ -34,7 +27,7 @@ public class AccountDatabase {
         return NOT_FOUND;
     }
 
-    private int find(AccountNumber accountNumber) { // Private find method
+    private int find(AccountNumber accountNumber) {
         for (int i = 0; i < size; i++) {
             if (accounts[i] != null && accounts[i].getNumber().equals(accountNumber)) {
                 return i;
@@ -45,7 +38,9 @@ public class AccountDatabase {
 
     private void grow() {
         Account[] newAccounts = new Account[accounts.length + CAPACITY_INCREMENT];
-        System.arraycopy(accounts, 0, newAccounts, 0, size);
+        for (int i = 0; i < size; i++) {
+            newAccounts[i] = accounts[i];
+        }
         accounts = newAccounts;
     }
 
@@ -62,8 +57,6 @@ public class AccountDatabase {
         }
         accounts[size++] = account;
     }
-
-    // Corrected and improved remove methods
 
     public void removeAccount(AccountNumber accountNumber) {
         int index = find(accountNumber);
@@ -83,7 +76,7 @@ public class AccountDatabase {
         }
     }
 
-    public Account getAccount(AccountNumber accountNumber) { // Public getter method
+    public Account getAccount(AccountNumber accountNumber) {
         int index = find(accountNumber);
         if (index != NOT_FOUND) {
             return accounts[index];
@@ -95,8 +88,6 @@ public class AccountDatabase {
         int count = 0;
         for (int i = 0; i < size; i++) {
             Account account = accounts[i];
-            System.out.println("Comparing with account holder: " + account.getHolder());
-            System.out.println("Account holder equals profile? " + account.getHolder().equals(profile));
             if (account.getHolder() != null && account.getHolder().equals(profile)) {
                 count++;
             }
@@ -116,28 +107,44 @@ public class AccountDatabase {
         }
         return matchingAccounts;
     }
+
     public boolean withdraw(AccountNumber number, double amount) {
-        Account account = getAccount(number); // Use the getter
-        if (account != null) {
-            return account.withdraw(amount);
+    Account account = getAccount(number);
+    if (account != null) {
+        double initialBalance = account.getBalance();
+        try {
+            account.withdraw(amount);
+            double finalBalance = account.getBalance();
+            if (initialBalance != finalBalance) {
+                if (account.getNumber().getType() == AccountType.MONEYMARKET && finalBalance < 2000) {
+                    account.downgradeAccountType();
+                }
+                return true;
+            }
+        } catch (IllegalArgumentException e) {
+            return false;
         }
-        return false;
     }
+    return false;
+}
 
     public void deposit(AccountNumber number, double amount) {
-        Account account = getAccount(number); // Use the getter
+        Account account = getAccount(number);
         if (account != null) {
             account.deposit(amount);
         }
     }
 
-
-    public void printArchive(){
+    public void printArchive() {
         archive.print();
-    } //print closed accounts
+    }
+
     public void printByBranch() {}
+
     public void printByHolder() {}
+
     public void printByType() {}
+
     public void printAllAccounts() {
         System.out.println("All accounts in database:");
         for (int i = 0; i < size; i++) {

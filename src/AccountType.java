@@ -4,9 +4,9 @@
 
 public enum AccountType
 {
-    checking("01"),
-    savings("02"),
-    moneymarket("03");
+    CHECKING("01"),
+    SAVINGS("02"),
+    MONEYMARKET("03");
 
     private final String code;
 
