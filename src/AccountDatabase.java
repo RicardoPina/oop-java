@@ -65,15 +65,13 @@ public class AccountDatabase {
 
     // Corrected and improved remove methods
 
-    public boolean removeAccount(AccountNumber accountNumber) {
+    public void removeAccount(AccountNumber accountNumber) {
         int index = find(accountNumber);
         if (index != NOT_FOUND) {
             archive.add(accounts[index]); // Archive before removing
             accounts[index] = accounts[--size];
             accounts[size] = null;
-            return true;
         }
-        return false;
     }
 
     public void removeAccount(Account account) {
@@ -93,18 +91,31 @@ public class AccountDatabase {
         return null;
     }
 
-    public Account findByAccountNumber(String accountNumber) {
-        AccountNumber searchAccountNumber = new AccountNumber(accountNumber);
-
-        for (int i = 0; i < size; i++) { // Iterate up to 'size', not the full array length
+    public Account[] findAccountsByProfile(Profile profile) {
+        int count = 0;
+        for (int i = 0; i < size; i++) {
             Account account = accounts[i];
-            if (account != null && account.getNumber() != null && account.getNumber().equals(searchAccountNumber)) {
-                return account;
+            System.out.println("Comparing with account holder: " + account.getHolder());
+            System.out.println("Account holder equals profile? " + account.getHolder().equals(profile));
+            if (account.getHolder() != null && account.getHolder().equals(profile)) {
+                count++;
             }
         }
-        return null;
-    }
 
+        if (count == 0) {
+            return new Account[0]; // Return an empty array if no matches are found
+        }
+
+        Account[] matchingAccounts = new Account[count];
+        int index = 0;
+        for (int i = 0; i < size; i++) {
+            Account account = accounts[i];
+            if (account != null && account.getHolder() != null && account.getHolder().equals(profile)) {
+                matchingAccounts[index++] = account;
+            }
+        }
+        return matchingAccounts;
+    }
     public boolean withdraw(AccountNumber number, double amount) {
         Account account = getAccount(number); // Use the getter
         if (account != null) {
@@ -127,4 +138,10 @@ public class AccountDatabase {
     public void printByBranch() {}
     public void printByHolder() {}
     public void printByType() {}
+    public void printAllAccounts() {
+        System.out.println("All accounts in database:");
+        for (int i = 0; i < size; i++) {
+            System.out.println(accounts[i]);
+        }
+    }
 }

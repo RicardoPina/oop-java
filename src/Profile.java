@@ -24,14 +24,25 @@ public class Profile implements Comparable<Profile>
      * checks if two profiles are equal based on first name, last name, and date of birth */
 
     @Override
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Profile profile = (Profile) obj;
-        return fname.equalsIgnoreCase(profile.fname) &&
-                lname.equalsIgnoreCase(profile.lname) &&
-                dob.equals(profile.dob);
+        Profile other = (Profile) obj;
+
+        // Manual null checks and comparisons
+        if (fname == null) {
+            if (other.fname != null) return false;
+        } else if (!fname.equalsIgnoreCase(other.fname)) return false;
+
+        if (lname == null) {
+            if (other.lname != null) return false;
+        } else if (!lname.equalsIgnoreCase(other.lname)) return false;
+
+        if (dob == null) {
+            if (other.dob != null) return false;
+        } else if (!dob.equals(other.dob)) return false;
+
+        return true; // All fields are equal
     }
 
     /**
@@ -79,25 +90,20 @@ public class Profile implements Comparable<Profile>
      * Testbed main() method to test Profile functionality.
      * This method is required for grading */
 
-    public static void main(String[] args)
-    {
-        Date dob1 = new Date(2000, 5, 20);
-        Date dob2 = new Date(1995, 10, 15);
-        Date dob3 = new Date(2000, 5, 20);
+    public static void main(String[] args) {
+        Profile p1 = new Profile("John", "Doe", new Date(2, 19, 2000));
+        Profile p2 = new Profile("John", "Doe", new Date(2, 19, 2000)); // Same data as p1
+        Profile p3 = new Profile("john", "doe", new Date(2, 19, 2000)); // Same data as p1, different case
+        Profile p4 = new Profile("Jane", "Doe", new Date(2, 19, 2000)); // Different first name
+        Profile p5 = new Profile("John", "Doe", new Date(2, 20, 2000)); // Different DOB
+        Profile p6 = new Profile("John", "Doe", null); // Null DOB
+        Profile p7 = new Profile("John", null, new Date(2, 19, 2000)); // Null last name
 
-        Profile profile1 = new Profile("John", "Doe", dob1);
-        Profile profile2 = new Profile("Alice", "Smith", dob2);
-        Profile profile3 = new Profile("John", "Doe", dob3);
-
-        System.out.println("Profile1 equals Profile2? " + profile1.equals(profile2)); //should be false
-        System.out.println("Profile1 equals Profile3? " + profile1.equals(profile3)); //should be true
-
-        // Testing toString()
-        System.out.println("Profile1: " + profile1); //John Doe 5/20/2000
-        System.out.println("Profile2: " + profile2); //Alice Smith 10/15/1995
-
-        // Testing compareTo()
-        System.out.println("Profile1 compared to Profile2: " + profile1.compareTo(profile2)); // > 0 (Doe > Smith)
-        System.out.println("Profile1 compared to Profile3: " + profile1.compareTo(profile3)); // 0 (Same profile)
+        System.out.println("p1 equals p2: " + p1.equals(p2)); // Should be true
+        System.out.println("p1 equals p3: " + p1.equals(p3)); // Should be true (case-insensitive)
+        System.out.println("p1 equals p4: " + p1.equals(p4)); // Should be false
+        System.out.println("p1 equals p5: " + p1.equals(p5)); // Should be false
+        System.out.println("p1 equals p6: " + p1.equals(p6)); // Depends on your null handling logic
+        System.out.println("p1 equals p7: " + p1.equals(p7)); // Depends on your null handling logic
     }
 }

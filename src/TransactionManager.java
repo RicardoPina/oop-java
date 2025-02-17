@@ -36,7 +36,6 @@ public class TransactionManager {
         // implement the switch cases
             switch (command) {
                 case O:
-
                     openAccount(tokens);
                     break;
                 case C:
@@ -94,7 +93,7 @@ private void openAccount(String[] tokens){
     /////////////////THis is the code im trying to fix///////////////////////////////////////
     Date date = new Date(dob);
     /////////////////////////////////////////////////////////
-    Profile newPerson = new Profile(lastName, firstName, date);
+    Profile newPerson = new Profile(firstName, lastName, date);
     AccountNumber accountNumber = new AccountNumber(branch, type);
     Account newAccount = new Account(accountNumber, newPerson, depositAmount);
     AccountDatabase.getInstance().add(newAccount);
@@ -132,13 +131,23 @@ private void closeAccount(String[] tokens) {
 
         Date dob = new Date(dobString);
         Profile profile = new Profile(firstName, lastName, dob);
-
-
+        Account[] accountsToClose = database.findAccountsByProfile(profile);
+        if (accountsToClose.length == 0) {
+            System.out.println("No accounts found for " + firstName + " " + lastName + ".");
+        } else {
+            for (Account account : accountsToClose) {
+                database.removeAccount(account);
+                System.out.println("Account closed: " + account);
+            }
+            System.out.println(accountsToClose.length + " accounts for " + firstName + " " + lastName + " have been closed.");
+        }
     }
 }
 
 private void withdrawProcess(String[] tokens){}
 
 private void depositProcess(String[] tokens){}
+
+
 }
 
