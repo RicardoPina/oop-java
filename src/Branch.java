@@ -59,6 +59,15 @@ public enum Branch
         return null;
     }
 
+    public static Branch fromBranchCode(String branchCode) {
+        for (Branch branch : Branch.values()) {
+            if (branch.getBranchCode().equals(branchCode)) {
+                return branch;
+            }
+        }
+        return null;
+    }
+
     /**
      * returns a string representation of the branch */
     @Override

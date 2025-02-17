@@ -24,8 +24,18 @@ public class AccountNumber implements Comparable<AccountNumber>
         this.number = generateRandomNumber();
     }
 
-    public AccountNumber(String numberToSearch){
-        this.number = numberToSearch;
+    public AccountNumber(String numberToSearch) {
+        if (numberToSearch.length() != 9) {
+            throw new IllegalArgumentException("Invalid account number format.");
+        }
+        String branchCode = numberToSearch.substring(0, 3);
+        this.branch = Branch.fromBranchCode(branchCode);
+        if (this.branch == null) {
+            throw new IllegalArgumentException("Invalid branch code.");
+        }
+        String typeCode = numberToSearch.substring(3, 5);
+        this.type = AccountType.fromCode(typeCode);
+        this.number = numberToSearch.substring(5);
     }
     /**
      * generates a 4-digit random number using a fixed seed.

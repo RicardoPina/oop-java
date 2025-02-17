@@ -41,6 +41,15 @@ public enum AccountType
         return null;
     }
 
+    public static AccountType fromCode(String code) {
+        for (AccountType type : AccountType.values()) {
+            if (type.getCode().equals(code)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Invalid account type code: " + code);
+    }
+
     /**
      * returns a string representation of the account type */
 
