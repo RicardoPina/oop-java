@@ -1,37 +1,175 @@
-public class Date implements Comparable<Date> {
+/**
+ * represents a date with year, month, and day.
+ * implements Comparable for sorting dates.
+ * includes a method to check if a date is valid */
+import java.util.Calendar;
+import java.util.StringTokenizer;
+public class Date implements Comparable<Date>
+{
     private int year;
     private int month;
     private int day;
-    public boolean isValid() {} //check if the date is a valid calendar date
+
+    public static final int QUADRENNIAL = 4;
+    public static final int CENTENNIAL = 100;
+    public static final int QUATERCENTENNIAL = 400;
+
+    // Days in each month
+    private static final int[] DAYS_IN_MONTH = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    /**
+     * constructor for the Date class */
+
+    public Date(int year, int month, int day)
+    {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+    public Date(String dob) {
+        int[] dateParts = parseDate(dob); // Call the parsing helper method
+        if (dateParts == null) {
+            throw new IllegalArgumentException("Invalid date format: " + dob); // Or handle the error as you see fit
+        }
+
+        this.month = dateParts[0];
+        this.day = dateParts[1];
+        this.year = dateParts[2];
+
+        int print = this.year;
+        if (!isValid()) { // Validate after parsing
+            throw new IllegalArgumentException("Invalid date: " + dob);
+        }
+       }
+
+
+    private static int[] parseDate(String dateStr) { // Helper function for parsing
+        if (dateStr == null) {
+            return null;
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer(dateStr, "/"); // Use StringTokenizer
+
+        if (tokenizer.countTokens() != 3) {
+            return null; // Incorrect number of parts
+        }
+
+        try {
+            int month = Integer.parseInt(tokenizer.nextToken());
+            int day = Integer.parseInt(tokenizer.nextToken());
+            int year = Integer.parseInt(tokenizer.nextToken());
+            return new int[]{month, day, year};
+
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
+     * checks if the date is a valid calendar date */
+
+    public boolean isValid()
+    {
+        if (month < 1 || month > 12) return false;
+
+        int maxDays = DAYS_IN_MONTH[month];
+        if (month == 2 && isLeapYear()) {
+            maxDays = 29;
+        }
+
+        return day > 0 && day <= maxDays;
+    }
+
+    /**
+     * determines if the year is a leap year */
+
+    private boolean isLeapYear()
+    {
+        if (year % QUADRENNIAL == 0)
+        {
+            if (year % CENTENNIAL == 0)
+            {
+                return year % QUATERCENTENNIAL == 0;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Compares this date with another date */
+    @Override
+    public int compareTo(Date other)
+    {
+        if (this.year != other.year)
+        {
+            return this.year - other.year;
+        }
+        if (this.month != other.month)
+        {
+            return this.month - other.month;
+        }
+        return this.day - other.day;
+    }
+
+    /**
+     * checks if two dates are equal */
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Date date = (Date) obj;
+        return year == date.year && month == date.month && day == date.day;
+    }
+
+    /**
+     * provides a string representation of the date */
+
+    @Override
+    public String toString()
+    {
+        return String.format("%d/%d/%d", month, day, year);
+    }
+
+    public int getYear()
+    {
+        return year;
+    }
+
+    public int getMonth()
+    {
+        return month;
+    }
+
+    public int getDay()
+    {
+        return day;
+    }
+
+    /**
+     * Testbed main() method to test the Date class
+     */
+    public static void main(String[] args) {
+        Date validDate1 = new Date(2024, 2, 29);
+        Date validDate2 = new Date(2023, 12, 31);
+        System.out.println("Is " + validDate1 + " valid? " + validDate1.isValid()); //should be true
+        System.out.println("Is " + validDate2 + " valid? " + validDate2.isValid()); //should be true
+
+        //invalid date tests
+        Date invalidDate1 = new Date(2023, 2, 29);
+        Date invalidDate2 = new Date(2023, 4, 31);
+        Date invalidDate3 = new Date(2023, 13, 10);
+        System.out.println("Is " + invalidDate1 + " valid? " + invalidDate1.isValid()); //should be false
+        System.out.println("Is " + invalidDate2 + " valid? " + invalidDate2.isValid()); //should be false
+        System.out.println("Is " + invalidDate3 + " valid? " + invalidDate3.isValid()); //should be false
+
+        //testing equals() and compareTo()
+        Date dateA = new Date(2023, 5, 20);
+        Date dateB = new Date(2023, 5, 20);
+        Date dateC = new Date(2022, 10, 10);
+        System.out.println("Are " + dateA + " and " + dateB + " equal? " + dateA.equals(dateB)); //should be true
+        System.out.println("Compare " + dateA + " and " + dateC + ": " + dateA.compareTo(dateC)); // > 0
+    }
 }
-
-/*
-You can add necessary constants, constructors, and methods; however, you CANNOT change or add
-instance variables, -2 points for each violation.
-You MUST override equals(), toString() and the comapreTo() methods, with the @Override tags. -2
-points for each violation.
-*/
-
-/*
-The isValid() method checks if a date is a valid calendar date.
-
-For the months of January, March, May, July, August, October, and December, each has 31 days; April,
-June, September, and November each has 30 days; February has 28 days in a non-leap year, and 29
-days in a leap year. DO NOT use magic numbers for the months, days, and years. You can use the
-constants defined in the Calendar class or define your own constant names. Below are examples
-for defining the constant names.
-
-public static final int QUADRENNIAL = 4;
-public static final int CENTENNIAL = 100;
-public static final int QUATERCENTENNIAL = 400;
-
-To determine whether a year is a leap year, follow these steps:
-Step 1. If the year is evenly divisible by 4, go to step 2. Otherwise, go to step 5.
-Step 2. If the year is evenly divisible by 100, go to step 3. Otherwise, go to step 4.
-Step 3. If the year is evenly divisible by 400, go to step 4. Otherwise, go to step 5.
-Step 4. The year is a leap year.
-Step 5. The year is not a leap year.
-
-You MUST include a testbed main() in this class or lose 12 points. You CAN use System.out in the
-testbed main() to display the test results.
-*/

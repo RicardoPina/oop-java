@@ -1,7 +1,7 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class TransactionManager {
+    private final AccountDatabase database = AccountDatabase.getInstance();
     // Default constructor
     public TransactionManager(){
     }
@@ -10,10 +10,6 @@ public class TransactionManager {
         O, C, D, W, P, PA, PB, PH, PT, Q
     }
 
-//    public enum AccountType {
-//        //    list the account types here
-//        Savings, Savings2
-//        }
     public void run() {
         System.out.println("System is up and running.");
         // start the scanner
@@ -22,7 +18,7 @@ public class TransactionManager {
         String input;
 
         // while the input is not q
-        while(!(input = scanner.nextLine()).equalsIgnoreCase("Q")) {
+        while(!(input = scanner.nextLine()).equals("Q")) {
             // tokenize input and store in "tokens"
             String[] tokens = input.split(" +");
             // if there is an input, call processCommand()
@@ -36,45 +32,42 @@ public class TransactionManager {
     private void processCommand(String[] tokens){
         String input = tokens[0].trim();
         Commands command = null;
-        try {
         command = Commands.valueOf(input);
-        System.out.println("Command: " +command);
         // implement the switch cases
-
             switch (command) {
                 case O:
-                    System.out.println("Selected: Open an account");
+
                     openAccount(tokens);
                     break;
                 case C:
-                    System.out.println("Selected: Close existing account");
+
                     closeAccount(tokens);
                     break;
                 case D:
                     depositProcess(tokens);
-                    System.out.println("Selected: Deposit to account");
+
                     break;
                 case W:
                     withdrawProcess(tokens);
-                    System.out.println("Selected: Withdraw from account");
+
                     break;
                 case P:
-                    System.out.println("Selected: Print account database");
+
                     break;
                 case PA:
-                    AccountDatabase.printArchive();
-                    System.out.println("Selected: Print archived of closed accounts");
+                    database.printArchive();
+//
                     break;
                 case PB:
-                    AccountDatabase.printByBranch();
+//                    AccountDatabase.printByBranch();
                     System.out.println("Selected: Print branch-phabetical accounts");
                     break;
                 case PH:
-                    AccountDatabase.printByHolder();
+//                    AccountDatabase.printByHolder();
                     System.out.println("Selected: Print ordered by the account holder’s profile");
                     break;
                 case PT:
-                    AccountDatabase.printByType();
+//                    AccountDatabase.printByType();
                     System.out.println("Selected: Print ordered by account type");
                     break;
                 case Q:
@@ -83,27 +76,29 @@ public class TransactionManager {
                 default:
                     System.out.println("Invalid command!");
             }
-        }catch (IllegalArgumentException e){
-            System.out.println("Invalid command: " + input);
-        }
     }
 
 private void openAccount(String[] tokens){
     //The token might be in lowercase, upper case or any combination.
+    // add if statements to add messages for incorrect input
     String accountType = tokens[1].trim().toLowerCase();
     String branchType = tokens[2].trim().toLowerCase();
     String firstName = tokens[3].trim();
     String lastName = tokens[4].trim();
     String dob = tokens[5].trim();
+    String amount = tokens[6].trim();
+    double depositAmount = Double.parseDouble(amount);
 
     AccountType type = AccountType.valueOf(accountType);
     Branch branch = Branch.valueOf(branchType);
-    ////////////////////////////////////////////////////////
+    /////////////////THis is the code im trying to fix///////////////////////////////////////
     Date date = new Date(dob);
+    /////////////////////////////////////////////////////////
     Profile newPerson = new Profile(lastName, firstName, date);
-    AccountNumber accountNumber = new AccountNumber(type, branch);
-    Account newAccount = new Account(accountNumber, newPerson);
-    add(newAccount);
+    AccountNumber accountNumber = new AccountNumber(branch, type);
+    Account newAccount = new Account(accountNumber, newPerson, depositAmount);
+    AccountDatabase.getInstance().add(newAccount);
+    System.out.println("Account opened: " + newAccount);
 }
 
 private void closeAccount(String[] tokens) {
@@ -114,20 +109,19 @@ private void closeAccount(String[] tokens) {
     // CASE 1:
     if (tokens.length == 2) {
         String accountNumberString = tokens[1].trim();
-        int accountNum = Integer.parseInt(accountNumberString);
+        AccountNumber accountNum = new AccountNumber(accountNumberString);
         //OVERLOAD THE METHODS TO MAKE IT WORK
-        Account accountToClose = AccountDatabase.find(accountNum);
+        Account accountToClose = AccountDatabase.getInstance().getAccount(accountNum);
 
         if (accountToClose == null) {
             System.out.println("Account not found.");
             return;
         }
         //OVERLOAD THE METHODS TO MAKE IT WORK
-        AccountDatabase.remove(accountToClose);  // which should also archive it
+        System.out.println("Account to close" + accountToClose);
+        AccountDatabase.getInstance().removeAccount(accountToClose);  // which should also archive i
 
-        boolean success = database.removeByNumber(accountNumberString);
-
-        if (success) System.out.println("Account [" + accountNumberString + "] closed.");
+        System.out.println("Account [" + accountNumberString + "] closed.");
     }
 
     // CASE 2: "C fName lName dob"
@@ -137,23 +131,8 @@ private void closeAccount(String[] tokens) {
         String dobString = tokens[3].trim();
 
         Date dob = new Date(dobString);
-        Profile profile = new Profile(lastName, firstName, dob);
+        Profile profile = new Profile(firstName, lastName, dob);
 
-        /*
-         Now find ALL accounts belonging to that profile.
-         Typically, you'd have a method in your database that returns a list of matching accounts:
-         List<Account> accountsForProfile = database.findAll(profile);
-         Then, for each account found, remove it and archive it.
-         Example pseudo-code:
-         if (accountsForProfile.isEmpty()) {
-            System.out.println("No accounts found for " + firstName + " " + lastName + ".");
-         } else {
-            for (Account acct : accountsForProfile) {
-                database.remove(acct);
-            }
-            System.out.println("All accounts for " + firstName + " " + lastName + " have been closed.");
-         }
-        */
 
     }
 }
