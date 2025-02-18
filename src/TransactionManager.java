@@ -97,26 +97,54 @@ private void openAccount(String[] tokens){
     AccountType type;
     Branch branch;
     Date date;
-    try {
-        depositAmount = Double.parseDouble(amount);
-    } catch (NumberFormatException e) {
-        System.out.println("For input string: " + amount + " - not a valid amount.");
-        return;
-    }
+    // Check account type
     try {
         type = AccountType.valueOf(accountType);
     } catch (IllegalArgumentException e) {
-        System.out.println(accountType + " - invalid account type.");
+        System.out.println(accountType.toLowerCase() + " - invalid account type.");
         return;
     }
-
+    // Check branch
     try {
         branch = Branch.valueOf(branchType);
     } catch (IllegalArgumentException e) {
         System.out.println(branchType + " - invalid branch.");
         return;
     }
-
+    // Check date of birth
+    try {
+        date = new Date(dob);
+        if (!date.isValid()) {
+            System.out.println("DOB invalid: " + dob + " is not a valid calendar date!");
+            return;
+        }
+        if (date.isTodayOrFuture()) {
+            System.out.println("DOB invalid: " + dob + " cannot be today or a future day.");
+            return;
+        }
+        if (date.isUnder18()) {
+            System.out.println("Not eligible to open: " + dob + " under 18!");
+            return;
+        }
+    } catch (IllegalArgumentException e) {
+        System.out.println("Invalid date format!");
+        return;
+    }
+    // Check person
+    Profile newPerson = new Profile(firstName, lastName, date);
+    // Check if the person already has an account of the same type
+    if (database.hasAccountOfType(newPerson, type)) {
+      System.out.println(firstName +" "+lastName +" already has a " + type.name().toLowerCase() + " account.");
+      return;
+  }
+  
+    // Check deposit 
+    try {
+        depositAmount = Double.parseDouble(amount);
+    } catch (NumberFormatException e) {
+        System.out.println("For input string: " + '"'+ amount +'"'+ " - not a valid amount.");
+        return;
+    }
     if (type == AccountType.MONEYMARKET && depositAmount < 2000) {
         System.out.println("Minimum of $2,000 to open a Money Market account.");
         return;   
@@ -125,34 +153,7 @@ private void openAccount(String[] tokens){
         System.out.println("Initial deposit cannot be 0 or negative.");
         return;
     }
-
-    try {
-        date = new Date(dob);
-        if (!date.isValid()) {
-            System.out.println("DOB invalid: " + dob + " is not a valid calendar date!");
-            return;
-        }
-        if (date.isTodayOrFuture()) {
-            System.out.println("DOB invalid: " + dob + " is today or a future date!");
-            return;
-        }
-        if (date.isUnder18()) {
-            System.out.println("DOB invalid: " + dob + " indicates the client is under 18!");
-            return;
-        }
-    } catch (IllegalArgumentException e) {
-        System.out.println("Invalid date format!");
-        return;
-    }
-
-
-    Profile newPerson = new Profile(firstName, lastName, date);
-      // Check if the person already has an account of the same type
-      if (database.hasAccountOfType(newPerson, type)) {
-        System.out.println(firstName +" "+lastName +" already has a " + type.name().toLowerCase() + " account.");
-        return;
-    }
-    
+    // Create new account   
     AccountNumber accountNumber = new AccountNumber(branch, type);
     Account newAccount = new Account(accountNumber, newPerson, depositAmount);
     database.add(newAccount);
