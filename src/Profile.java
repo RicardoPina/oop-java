@@ -106,7 +106,7 @@ public class Profile implements Comparable<Profile>
         System.out.println("p1 equals p3: " + p1.equals(p3)); // Should be true (case-insensitive)
         System.out.println("p1 equals p4: " + p1.equals(p4)); // Should be false
         System.out.println("p1 equals p5: " + p1.equals(p5)); // Should be false
-        System.out.println("p1 equals p6: " + p1.equals(p6)); // Depends on your null handling logic
-        System.out.println("p1 equals p7: " + p1.equals(p7)); // Depends on your null handling logic
+        System.out.println("p1 equals p6: " + p1.equals(p6)); // Should be false
+        System.out.println("p1 equals p7: " + p1.equals(p7)); // Should be false
     }
 }

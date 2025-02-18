@@ -188,19 +188,20 @@ public class Date implements Comparable<Date>
      * @tests the equals() and compareTo() methods
      */
     public static void main(String[] args) {
-        Date validDate1 = new Date(2024, 2, 29);
-        Date validDate2 = new Date(2023, 12, 31);
+        Date validDate1 = new Date(2005, 12, 31);
+        Date validDate2 = new Date(1996, 02, 29);
         System.out.println("Is " + validDate1 + " valid? " + validDate1.isValid()); //should be true
         System.out.println("Is " + validDate2 + " valid? " + validDate2.isValid()); //should be true
 
         //invalid date tests
-        Date invalidDate1 = new Date(2023, 2, 29);
-        Date invalidDate2 = new Date(2023, 4, 31);
-        Date invalidDate3 = new Date(2023, 13, 10);
+        Date invalidDate1 = new Date(2023, 02, 29);
+        Date invalidDate2 = new Date(2000, 04, 31);
+        Date invalidDate3 = new Date(1999, 13, 10);
+        Date invalidDate4 = new Date(2004, 00, 10);
         System.out.println("Is " + invalidDate1 + " valid? " + invalidDate1.isValid()); //should be false
         System.out.println("Is " + invalidDate2 + " valid? " + invalidDate2.isValid()); //should be false
         System.out.println("Is " + invalidDate3 + " valid? " + invalidDate3.isValid()); //should be false
-
+        System.out.println("Is " + invalidDate4 + " valid? " + invalidDate4.isValid()); //should be false
         //testing equals() and compareTo()
         Date dateA = new Date(2023, 5, 20);
         Date dateB = new Date(2023, 5, 20);
@@ -208,4 +209,6 @@ public class Date implements Comparable<Date>
         System.out.println("Are " + dateA + " and " + dateB + " equal? " + dateA.equals(dateB)); //should be true
         System.out.println("Compare " + dateA + " and " + dateC + ": " + dateA.compareTo(dateC)); // > 0
     }
+
+    
 }
