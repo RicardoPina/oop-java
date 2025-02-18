@@ -101,14 +101,14 @@ private void openAccount(String[] tokens){
     try {
         type = AccountType.valueOf(accountType);
     } catch (IllegalArgumentException e) {
-        System.out.println("Invalid account type!");
+        System.out.println(accountType + " - invalid account type.");
         return;
     }
 
     try {
         branch = Branch.valueOf(branchType);
     } catch (IllegalArgumentException e) {
-        System.out.println("Invalid branch type!");
+        System.out.println(branchType + " - invalid branch.");
         return;
     }
 
