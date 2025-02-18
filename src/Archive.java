@@ -28,12 +28,13 @@ public class Archive {
         }
 
         AccountNode current = first;
-        System.out.println("Closed Accounts:"); // Header for the output
+        System.out.println("*List of closed accounts in the archive."); // Header for the output
 
         while (current != null) {
             System.out.println(current.account);  // Print the account details. toString() method of account will be used.
             current = current.next;
         }
+        System.out.println("*End of list.\n");
     }
 
     public static void main(String[] args) {

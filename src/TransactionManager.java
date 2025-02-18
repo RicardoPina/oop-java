@@ -26,7 +26,7 @@ public class TransactionManager {
                 this.processCommand(tokens);
             }
         }
-        System.out.println("Collection Manager terminated.");
+        System.out.println("Transaction Manager terminated.");
         scanner.close();
     }
 
@@ -174,14 +174,14 @@ private void closeAccount(String[] tokens) {
         Account accountToClose = database.getAccount(accountNum);
 
         if (accountToClose == null) {
-            System.out.println("Account not found.");
+            System.out.println(accountNum + " account does not exist.");
             return;
         }
         //OVERLOAD THE METHODS TO MAKE IT WORK
         System.out.println(accountToClose);
         database.removeAccount(accountToClose);  // which should also archive i
 
-        System.out.println("Account [" + accountNumberString + "] closed.");
+        System.out.println(accountNumberString + "is closed and moved to archive; balance set to 0.");
     }
 
     // CASE 2: "C fName lName dob"
@@ -194,22 +194,17 @@ private void closeAccount(String[] tokens) {
         Profile profile = new Profile(firstName, lastName, dob);
         Account[] accountsToClose = database.findAccountsByProfile(profile);
         if (accountsToClose.length == 0) {
-            System.out.println("No accounts found for " + firstName + " " + lastName + ".");
+            System.out.println(firstName + " " + lastName + " does not have any accounts in the database.");
         } else {
             for (Account account : accountsToClose) {
                 database.removeAccount(account);
-                System.out.println("Account closed: " + account);
             }
-            System.out.println(accountsToClose.length + " accounts for " + firstName + " " + lastName + " have been closed.");
+            System.out.println("All accounts for " + firstName + " " + lastName + " "+ dobString+" are closed and moved to archive, balance set to 0.");
         }
     }
 }
 
 private void withdrawProcess(String[] tokens){
-    if (tokens.length < 3) {
-        System.out.println("Missing data for withdrawal!");
-        return;
-    }
     String accountNumberString = tokens[1].trim();
     String amountString = tokens[2].trim();
     double amount;
@@ -246,10 +241,6 @@ private void withdrawProcess(String[] tokens){
 }
 
 private void depositProcess(String[] tokens){
-    if (tokens.length < 3) {
-        System.out.println("Missing data for deposit!");
-        return;
-    }
     String accountNumberString = tokens[1].trim();
     String amountString = tokens[2].trim();
     double amount;
