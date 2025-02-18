@@ -116,7 +116,7 @@ public class AccountDatabase {
             account.withdraw(amount);
             double finalBalance = account.getBalance();
             if (initialBalance != finalBalance) {
-                if (account.getNumber().getType() == AccountType.MONEY_MARKET && finalBalance < 2000) {
+                if (account.getNumber().getType() == AccountType.MONEYMARKET && finalBalance < 2000) {
                     account.downgradeAccountType();
                 }
                 return true;

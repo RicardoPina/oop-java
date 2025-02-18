@@ -41,7 +41,7 @@ public class Account implements Comparable<Account>
         }
     }
     public void downgradeAccountType() {
-        if (number.getType() == AccountType.MONEY_MARKET && balance < 2000) {
+        if (number.getType() == AccountType.MONEYMARKET && balance < 2000) {
             number.setType(AccountType.SAVINGS);
         }
     }

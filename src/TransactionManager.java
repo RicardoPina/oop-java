@@ -99,7 +99,7 @@ private void openAccount(String[] tokens){
     Date date;
     // Check account type
     try {
-        type = AccountType.fromString(accountType);
+        type = AccountType.valueOf(accountType);
     } catch (IllegalArgumentException e) {
         System.out.println(accountType.toLowerCase() + " - invalid account type.");
         return;
@@ -137,7 +137,7 @@ private void openAccount(String[] tokens){
         System.out.println("For input string: " + '"'+ amount +'"'+ " - not a valid amount.");
         return;
     }
-    if (type == AccountType.MONEY_MARKET && depositAmount < 2000) {
+    if (type == AccountType.MONEYMARKET && depositAmount < 2000) {
         System.out.println("Minimum of $2,000 to open a Money Market account.");
         return;   
     }
@@ -235,7 +235,7 @@ private void withdrawProcess(String[] tokens){
     boolean success = database.withdraw(accountNum, amount);
     if (success) {
         AccountType finalType = account.getNumber().getType();
-        if (initialType == AccountType.MONEY_MARKET && finalType == AccountType.SAVINGS) {
+        if (initialType == AccountType.MONEYMARKET && finalType == AccountType.SAVINGS) {
             System.out.printf("%s is downgraded to SAVINGS - $%.2f withdrawn from %s%n", accountNumberString, amount, accountNumberString);
         } else {
             System.out.printf("$%.2f withdrawn from %s%n", amount, accountNumberString);
