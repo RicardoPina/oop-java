@@ -12,7 +12,10 @@ public class Account implements Comparable<Account>
     private double balance;
 
     /**
-     * constructor to initialize an account */
+     * constructor to initialize an account 
+     * @param number the account number
+     * 
+     * */
 
     public Account(AccountNumber number, Profile holder, double balance)
     {
@@ -22,7 +25,9 @@ public class Account implements Comparable<Account>
     }
 
     /**
-     * deposits a specified amount into the account */
+     * deposits a specified amount into the account 
+     * 
+     * */
 
     public void deposit(double amount) {
         if (amount > 0) {
@@ -33,7 +38,7 @@ public class Account implements Comparable<Account>
     /**
      * withdraws a specified amount from the account if sufficient balance is available
      *
-     * @return
+     * 
      */
 
     public void withdraw(double amount) {
@@ -49,7 +54,10 @@ public class Account implements Comparable<Account>
         }
     }
     /**
-     * checks if two accounts are equal based on their account numbers */
+     * checks if two accounts are equal based on their account numbers 
+     * 
+     * @return true if the accounts have the same account number, false otherwise
+     * */
 
     @Override
     public boolean equals(Object obj) {
@@ -60,7 +68,10 @@ public class Account implements Comparable<Account>
     }
 
     /**
-     * provides a string representation of the account details */
+     * provides a string representation of the account details 
+     * 
+     * @return a string representation of the account details
+     * */
 
     @Override
     public String toString()
@@ -70,7 +81,10 @@ public class Account implements Comparable<Account>
     }
 
     /**
-     * compares two accounts based on their account numbers*/
+     * compares two accounts based on their account numbers
+     * @overrides compareTo in interface java.lang.Comparable
+     * @return a negative integer, zero, or a positive integer if this account is less than, equal to, or greater than the other account
+     * */
 
     @Override
     public int compareTo(Account other)
@@ -78,17 +92,30 @@ public class Account implements Comparable<Account>
         return this.number.compareTo(other.number);
     }
 
-    //getters
+    /**
+     * gets the account number 
+     * 
+     * @return the account number
+     * */
     public AccountNumber getNumber()
     {
         return number;
     }
-
+    /**
+     * gets the account holder profile 
+     * 
+     * @return the account holder profile
+     * */
     public Profile getHolder()
     {
         return holder;
     }
 
+    /**
+     * gets the account balance
+     * 
+     * @return the account balance
+     * */
     public double getBalance()
     {
         return balance;

@@ -27,21 +27,30 @@ public enum Branch
     }
 
     /**
-     * gets the branch code */
+     * gets the branch code 
+     * 
+     * @returns the branch code
+     * */
     public String getBranchCode()
     {
         return branchCode;
     }
 
     /**
-     * gets the zip code of the branch */
+     * gets the zip code of the branch 
+     * 
+     * @returns the zip code of the branch
+     * */
     public String getZip()
     {
         return zip;
     }
 
     /**
-     * gets the county where the branch is located*/
+     * gets the county where the branch is located
+     * 
+     * @returns the county where the branch is located
+     * */
 
     public String getCounty()
     {
@@ -49,7 +58,10 @@ public enum Branch
     }
 
     /**
-     * returns the branch enum based on the city name  */
+     * returns the branch enum based on the city name  
+     * 
+     * @returns the branch enum based on the city name, or null if the city is invalid
+     * */
 
     public static Branch fromCity(String city)
     {
@@ -62,6 +74,11 @@ public enum Branch
         return null;
     }
 
+    /**
+     * returns the branch enum based on the branch code 
+     * 
+     * @returns the branch enum based on the branch code, or null if the code is invalid
+     * */
     public static Branch fromBranchCode(String branchCode) {
         for (Branch branch : Branch.values()) {
             if (branch.getBranchCode().equals(branchCode)) {
@@ -72,7 +89,11 @@ public enum Branch
     }
 
     /**
-     * returns a string representation of the branch */
+     * returns a string representation of the branch 
+     * 
+     * @overrides toString in class java.lang.Enum
+     * @returns a string representation of the branch
+     * */
     @Override
     public String toString()
     {

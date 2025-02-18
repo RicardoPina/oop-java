@@ -5,6 +5,11 @@
 public class Archive {
     private AccountNode first; // the head node of the linked list
 
+/*
+ * Constructor for the Archive class. Initializes the linked list.
+ * 
+ * 
+ */
     private static class AccountNode { // Inner class for the node
         Account account;
         AccountNode next;
@@ -15,12 +20,18 @@ public class Archive {
         }
     }
 
+    /**
+     * Adds a closed account to the archive.
+     * @param account the account to add to the archive
+     */
     public void add(Account account) {
         AccountNode newNode = new AccountNode(account);
         newNode.next = first; // Insert at the front
         first = newNode;
     }
-
+    /**
+     * Prints the list of closed accounts in the archive.
+     */
     public void print() {
         if (first == null) {
             System.out.println("Archive is empty.");
@@ -36,7 +47,10 @@ public class Archive {
         }
         System.out.println("*End of list.\n");
     }
-
+    /**
+     * Main method to test the Archive class.
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         AccountDatabase database = new AccountDatabase(); // Get the AccountDatabase instance
         //Archive archive = new Archive(); // You can still create an Archive instance for testing, but it's not strictly necessary for this test

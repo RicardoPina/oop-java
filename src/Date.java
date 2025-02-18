@@ -154,17 +154,29 @@ public class Date implements Comparable<Date>
     {
         return String.format("%d/%d/%d", month, day, year);
     }
-
+    /**
+     * gets the year of the date 
+     * 
+     * @returns the year of the date
+     * */
     public int getYear()
     {
         return year;
     }
-
+/**
+     * gets the month of the date 
+     * 
+     * @returns the month of the date
+     * */
     public int getMonth()
     {
         return month;
     }
-
+/**
+     * gets the day of the date 
+     * 
+     * @returns the day of the date
+     * */
     public int getDay()
     {
         return day;
@@ -172,6 +184,8 @@ public class Date implements Comparable<Date>
 
     /**
      * Testbed main() method to test the Date class
+     * @tests the isValid() method
+     * @tests the equals() and compareTo() methods
      */
     public static void main(String[] args) {
         Date validDate1 = new Date(2024, 2, 29);

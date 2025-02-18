@@ -6,7 +6,6 @@ import java.util.Random;
  * 
  * @author Andrew Salama
  * */
-
 public class AccountNumber implements Comparable<AccountNumber>
 {
     // private static final int SEED = 9999;
@@ -38,7 +37,10 @@ public class AccountNumber implements Comparable<AccountNumber>
     }
     /**
      * generates a 4-digit random number using a fixed seed.
-     * ensures the number remains within the range 1000-9999 */
+     * ensures the number remains within the range 1000-9999 
+     * 
+     * @returns the generated random number as a string
+     * */
 
     private String generateRandomNumber()
     {
@@ -49,7 +51,10 @@ public class AccountNumber implements Comparable<AccountNumber>
         return String.valueOf(randNum);
     }
     /**
-     * returns the full 9-digit account number */
+     * Returns the full 9-digit account number as a string
+     * @returns the full 9-digit account number 
+     * 
+     * */
 
     @Override
     public String toString()
@@ -58,7 +63,10 @@ public class AccountNumber implements Comparable<AccountNumber>
     }
 
     /**
-     * Compares two account numbers for sorting */
+     * Compares two account numbers for sorting 
+     * 
+     * @returns the comparison of the two account numbers as a string
+     * */
 
     @Override
     public int compareTo(AccountNumber other)
@@ -67,7 +75,11 @@ public class AccountNumber implements Comparable<AccountNumber>
     }
 
     /**
-     * checks if two account numbers are equal based on their full 9-digit string */
+     * checks if two account numbers are equal based on their full 9-digit string
+     * 
+     * @overrides equals in class java.lang.Object
+     * @returns true if the account numbers are equal, false otherwise
+     *  */
     @Override
     public boolean equals(Object obj)
     {
@@ -77,26 +89,50 @@ public class AccountNumber implements Comparable<AccountNumber>
         return this.toString().equals(that.toString());
     }
 
+    /**
+     * Sets the account type to savings if money market
+     * balance is below 2,000 
+     * 
+     * @returns the account type
+     * */
     public AccountType setType(AccountType type) {
         AccountType oldType = this.type;
         this.type = type;
         return oldType;
     }
+
+    /**
+     * gets the branch of the account number 
+     * 
+     * @returns the branch of the account number
+     * */
     public Branch getBranch()
     {
         return branch;
     }
-
+    /**
+     * gets the account type of the account number 
+     * 
+     * @returns the account type of the account number
+     * */
     public AccountType getType()
     {
         return type;
     }
-
+    /**
+     * gets the branch code of the account number 
+     * 
+     * @returns the branch code of the account number
+     * */
     public String getBranchCode()
     {
         return branch.getBranchCode();
     }
-
+    /**
+     * gets the account type code of the account number 
+     * 
+     * @returns the account type code of the account number
+     * */
     public String getNumber()
     {
         return number;

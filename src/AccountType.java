@@ -14,7 +14,9 @@ public enum AccountType
     private final String code;
 
     /**
-     * constructor for an AccountType enum */
+     * constructor for an AccountType enum 
+     * 
+     * */
 
     AccountType(String code)
     {
@@ -22,7 +24,10 @@ public enum AccountType
     }
 
     /**
-     * gets the account type code */
+     * gets the account type code 
+     * 
+     * @returns the account type code
+     * */
 
     public String getCode()
     {
@@ -30,7 +35,10 @@ public enum AccountType
     }
 
     /**
-     * Returns the AccountType enum based on a string input (case insensitive) */
+     * Returns the AccountType enum based on a string input (case insensitive) 
+     * 
+     * @returns the AccountType enum based on the input string, or null if the input is invalid
+     * */
 
     public static AccountType fromString(String type)
     {
@@ -44,6 +52,11 @@ public enum AccountType
         return null;
     }
 
+    /**
+     * Returns the AccountType based on a 2-digit code 
+     * 
+     * @returns the AccountType enum based on the input code, or throws an exception if the code is invalid
+     * */
     public static AccountType fromCode(String code) {
         for (AccountType type : AccountType.values()) {
             if (type.getCode().equals(code)) {
@@ -54,7 +67,11 @@ public enum AccountType
     }
 
     /**
-     * returns a string representation of the account type */
+     * returns a string representation of the account type 
+     * 
+     * @overrides toString in class java.lang.Enum
+     * @returns a string representation of the account type
+     * */
 
     @Override
     public String toString()
