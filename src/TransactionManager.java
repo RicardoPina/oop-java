@@ -108,7 +108,7 @@ private void openAccount(String[] tokens){
     try {
         branch = Branch.valueOf(branchType);
     } catch (IllegalArgumentException e) {
-        System.out.println(branchType + " - invalid branch.");
+        System.out.println(branchType.toLowerCase() + " - invalid branch.");
         return;
     }
     // Check date of birth
@@ -134,7 +134,7 @@ private void openAccount(String[] tokens){
      try {
         depositAmount = Double.parseDouble(amount);
     } catch (NumberFormatException e) {
-        System.out.println("For input string: " + '"'+ amount +'"'+ " - not a valid amount.");
+        System.out.println("For input string: " + '"'+ amount.toLowerCase() +'"'+ " - not a valid amount.");
         return;
     }
     if (type == AccountType.MONEYMARKET && depositAmount < 2000) {
@@ -245,7 +245,35 @@ private void withdrawProcess(String[] tokens){
     }
 }
 
-private void depositProcess(String[] tokens){}
+private void depositProcess(String[] tokens){
+    if (tokens.length < 3) {
+        System.out.println("Missing data for deposit!");
+        return;
+    }
+    String accountNumberString = tokens[1].trim();
+    String amountString = tokens[2].trim();
+    double amount;
+    try {
+        amount = Double.parseDouble(amountString);
+        if (amount <= 0) {
+            System.out.println(amount + " deposit amount cannot be 0 or negative.");
+            return;
+        }
+    } catch (NumberFormatException e) {
+        System.out.println("For input string: " + amountString + " - not a valid amount.");
+        return;
+    }
+
+    AccountNumber accountNum = new AccountNumber(accountNumberString);
+    Account account = database.getAccount(accountNum);
+    if (account == null) {
+        System.out.println(accountNumberString + " does not exist.");
+        return;
+    }
+
+    database.deposit(accountNum, amount);
+    System.out.printf("$%.2f deposited to %s%n", amount, accountNumberString);
+}
 
 
 }
