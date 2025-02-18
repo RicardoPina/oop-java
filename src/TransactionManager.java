@@ -99,7 +99,7 @@ private void openAccount(String[] tokens){
     Date date;
     // Check account type
     try {
-        type = AccountType.valueOf(accountType);
+        type = AccountType.fromString(accountType);
     } catch (IllegalArgumentException e) {
         System.out.println(accountType.toLowerCase() + " - invalid account type.");
         return;
