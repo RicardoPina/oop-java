@@ -93,11 +93,16 @@ private void openAccount(String[] tokens){
     String lastName = tokens[4].trim();
     String dob = tokens[5].trim();
     String amount = tokens[6].trim();
-    double depositAmount = Double.parseDouble(amount);
+    double depositAmount;
     AccountType type;
     Branch branch;
     Date date;
-    
+    try {
+        depositAmount = Double.parseDouble(amount);
+    } catch (NumberFormatException e) {
+        System.out.println("For input string: " + amount + " - not a valid amount.");
+        return;
+    }
     try {
         type = AccountType.valueOf(accountType);
     } catch (IllegalArgumentException e) {
