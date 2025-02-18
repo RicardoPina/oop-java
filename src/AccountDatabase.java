@@ -262,6 +262,7 @@ public class AccountDatabase {
         }
         System.out.println("*end of list.\n");
     }
+    
     public boolean hasAccountOfType(Profile profile, AccountType type) {
         for (int i = 0; i < size; i++) {
             Account account = accounts[i];
