@@ -6,7 +6,7 @@ public enum AccountType
 {
     CHECKING("01"),
     SAVINGS("02"),
-    MONEYMARKET("03");
+    MONEY_MARKET("03");
 
     private final String code;
 
