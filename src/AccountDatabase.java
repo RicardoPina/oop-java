@@ -137,7 +137,7 @@ public class AccountDatabase {
 
     public void printArchive() {
         if (size == 0) {
-            System.out.println("Account Database is empty!\n");
+            System.out.println("Account Database is empty!");
             return;
         }
         archive.print();
@@ -145,7 +145,7 @@ public class AccountDatabase {
 
     public void printByBranch() {
         if (size == 0) {
-            System.out.println("Account Database is empty!\n");
+            System.out.println("Account Database is empty!");
             return;
         }
         System.out.println("\n" + "*List of accounts ordered by branch location (county, city).");
@@ -212,7 +212,7 @@ public class AccountDatabase {
 
     public void printByType() {
         if (size == 0) {
-            System.out.println("Account Database is empty!\n");
+            System.out.println("Account Database is empty!");
             return;
         }
         System.out.println("\n*List of accounts ordered by account type and number.");
@@ -247,13 +247,13 @@ public class AccountDatabase {
             }
         }
 
-        System.out.println("*end of list.\n");
+        System.out.println("*end of list.");
 
     }
 
     public void printAllAccounts() {
         if (size == 0) {
-            System.out.println("Account Database is empty!\n");
+            System.out.println("Account Database is empty!");
             return;
         }
         System.out.println("\n*List of accounts in the account database.");
