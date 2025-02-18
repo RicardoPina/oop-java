@@ -212,7 +212,7 @@ public class AccountDatabase {
 
     public void printByType() {
         if (size == 0) {
-            System.out.println("Account Database is empty!");
+            System.out.println("Account database is empty!");
             return;
         }
         System.out.println("\n*List of accounts ordered by account type and number.");

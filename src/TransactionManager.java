@@ -130,16 +130,8 @@ private void openAccount(String[] tokens){
         System.out.println("Invalid date format!");
         return;
     }
-    // Check person
-    Profile newPerson = new Profile(firstName, lastName, date);
-    // Check if the person already has an account of the same type
-    if (database.hasAccountOfType(newPerson, type)) {
-      System.out.println(firstName +" "+lastName +" already has a " + type.name().toLowerCase() + " account.");
-      return;
-  }
-  
-    // Check deposit 
-    try {
+     // Check deposit 
+     try {
         depositAmount = Double.parseDouble(amount);
     } catch (NumberFormatException e) {
         System.out.println("For input string: " + '"'+ amount +'"'+ " - not a valid amount.");
@@ -153,6 +145,15 @@ private void openAccount(String[] tokens){
         System.out.println("Initial deposit cannot be 0 or negative.");
         return;
     }
+    // Check person
+    Profile newPerson = new Profile(firstName, lastName, date);
+    // Check if the person already has an account of the same type
+    if (database.hasAccountOfType(newPerson, type)) {
+      System.out.println(firstName +" "+lastName +" already has a " + type.name().toLowerCase() + " account.");
+      return;
+  }
+  
+   
     // Create new account   
     AccountNumber accountNumber = new AccountNumber(branch, type);
     Account newAccount = new Account(accountNumber, newPerson, depositAmount);
