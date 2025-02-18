@@ -137,7 +137,7 @@ public class AccountDatabase {
 
     public void printArchive() {
         if (size == 0) {
-            System.out.println("Account Database is empty!");
+            System.out.println("Account Database is empty!\n");
             return;
         }
         archive.print();
@@ -145,10 +145,10 @@ public class AccountDatabase {
 
     public void printByBranch() {
         if (size == 0) {
-            System.out.println("Account Database is empty!");
+            System.out.println("Account Database is empty!\n");
             return;
         }
-        System.out.println("*List of accounts ordered by branch location (county, city).");
+        System.out.println("\n" + "*List of accounts ordered by branch location (county, city).");
         String[] counties = {"Mercer", "Middlesex", "Somerset"};
         String[][] branches = {
             {"PRINCETON"},
@@ -175,7 +175,7 @@ public class AccountDatabase {
             }
     }
 
-    System.out.println("*end of list.");
+    System.out.println("*end of list.\n");
 
     }
 
@@ -212,10 +212,10 @@ public class AccountDatabase {
 
     public void printByType() {
         if (size == 0) {
-            System.out.println("Account Database is empty!");
+            System.out.println("Account Database is empty!\n");
             return;
         }
-        System.out.println("*List of accounts ordered by account type and number.");
+        System.out.println("\n*List of accounts ordered by account type and number.");
 
         // Bubble sort accounts by account type and account number
         for (int i = 0; i < size - 1; i++) {
@@ -247,20 +247,20 @@ public class AccountDatabase {
             }
         }
 
-        System.out.println("*end of list.");
+        System.out.println("*end of list.\n");
 
     }
 
     public void printAllAccounts() {
         if (size == 0) {
-            System.out.println("Account Database is empty!");
+            System.out.println("Account Database is empty!\n");
             return;
         }
-        System.out.println("*List of accounts in the account database.");
+        System.out.println("\n*List of accounts in the account database.");
         for (int i = 0; i < size; i++) {
             System.out.println(accounts[i]);
         }
-        System.out.println("*end of list.");
+        System.out.println("*end of list.\n");
     }
     public boolean hasAccountOfType(Profile profile, AccountType type) {
         for (int i = 0; i < size; i++) {
