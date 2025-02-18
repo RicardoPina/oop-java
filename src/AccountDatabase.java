@@ -136,10 +136,18 @@ public class AccountDatabase {
     }
 
     public void printArchive() {
+        if (size == 0) {
+            System.out.println("Account Database is empty!");
+            return;
+        }
         archive.print();
     }
 
     public void printByBranch() {
+        if (size == 0) {
+            System.out.println("Account Database is empty!");
+            return;
+        }
         System.out.println("*List of accounts ordered by branch location (county, city).");
         String[] counties = {"Mercer", "Middlesex", "Somerset"};
         String[][] branches = {
@@ -203,6 +211,10 @@ public class AccountDatabase {
     }
 
     public void printByType() {
+        if (size == 0) {
+            System.out.println("Account Database is empty!");
+            return;
+        }
         System.out.println("*List of accounts ordered by account type and number.");
 
         // Bubble sort accounts by account type and account number
@@ -240,6 +252,10 @@ public class AccountDatabase {
     }
 
     public void printAllAccounts() {
+        if (size == 0) {
+            System.out.println("Account Database is empty!");
+            return;
+        }
         System.out.println("*List of accounts in the account database.");
         for (int i = 0; i < size; i++) {
             System.out.println(accounts[i]);

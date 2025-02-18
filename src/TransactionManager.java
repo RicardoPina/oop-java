@@ -93,29 +93,31 @@ private void openAccount(String[] tokens){
     String lastName = tokens[4].trim();
     String dob = tokens[5].trim();
     String amount = tokens[6].trim();
-
     double depositAmount = Double.parseDouble(amount);
-    
-    if (depositAmount <= 0) {
-        System.out.println("Initial deposit cannot be 0 or negative.");
-        return;
-    }
-
     AccountType type;
     Branch branch;
     Date date;
-
+    
     try {
         type = AccountType.valueOf(accountType);
     } catch (IllegalArgumentException e) {
+        System.out.println("Invalid account type!");
         return;
     }
-
-    
 
     try {
         branch = Branch.valueOf(branchType);
     } catch (IllegalArgumentException e) {
+        System.out.println("Invalid branch type!");
+        return;
+    }
+
+    if (type == AccountType.MONEYMARKET && depositAmount < 2000) {
+        System.out.println("Minimum of $2,000 to open a Money Market account.");
+        return;   
+    }
+    if (depositAmount <= 0) {
+        System.out.println("Initial deposit cannot be 0 or negative.");
         return;
     }
 
@@ -138,10 +140,6 @@ private void openAccount(String[] tokens){
         return;
     }
 
-    if (type == AccountType.MONEYMARKET && depositAmount < 2000) {
-        System.out.println("Minimum of $2,000 to open a Money Market account.");
-        return;   
-    }
 
     Profile newPerson = new Profile(firstName, lastName, date);
       // Check if the person already has an account of the same type
@@ -149,10 +147,11 @@ private void openAccount(String[] tokens){
         System.out.println(firstName +" "+lastName +" already has a " + type.name().toLowerCase() + " account.");
         return;
     }
+    
     AccountNumber accountNumber = new AccountNumber(branch, type);
     Account newAccount = new Account(accountNumber, newPerson, depositAmount);
     database.add(newAccount);
-    System.out.println("Account opened: " + newAccount);
+    System.out.println(type.name()+ " account " + newAccount.getNumber() + " has been opened.");
 }
 
 private void closeAccount(String[] tokens) {
