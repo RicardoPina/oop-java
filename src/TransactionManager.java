@@ -57,7 +57,7 @@ public class TransactionManager {
 
                     break;
                 case P:
-
+                    database.printAllAccounts();
                     break;
                 case PA:
                     database.printArchive();
@@ -65,15 +65,18 @@ public class TransactionManager {
                     break;
                 case PB:
 //                    AccountDatabase.printByBranch();
-                    System.out.println("Selected: Print branch-phabetical accounts");
+                    // System.out.println("Selected: Print branch-phabetical accounts");
+                    database.printByBranch();
                     break;
                 case PH:
+                    database.printByHolder();
 //                    AccountDatabase.printByHolder();
-                    System.out.println("Selected: Print ordered by the account holder’s profile");
+                    // System.out.println("Selected: Print ordered by the account holder’s profile");
                     break;
                 case PT:
-//                    AccountDatabase.printByType();
-                    System.out.println("Selected: Print ordered by account type");
+                    database.printByType();
+// AccountDatabase.printByType();
+                    // System.out.println("Selected: Print ordered by account type");
                     break;
                 case Q:
                     System.out.println("Transaction Manager is terminated\n");
@@ -84,8 +87,6 @@ public class TransactionManager {
     }
 
 private void openAccount(String[] tokens){
-    //The token might be in lowercase, upper case or any combination.
-    // add if statements to add messages for incorrect input
     String accountType = tokens[1].trim().toUpperCase();
     String branchType = tokens[2].trim().toUpperCase();
     String firstName = tokens[3].trim();
@@ -93,8 +94,12 @@ private void openAccount(String[] tokens){
     String dob = tokens[5].trim();
     String amount = tokens[6].trim();
 
-    // Deposit amount shoud be more tan x if x
     double depositAmount = Double.parseDouble(amount);
+    
+    if (depositAmount <= 0) {
+        System.out.println("Initial deposit cannot be 0 or negative.");
+        return;
+    }
 
     AccountType type;
     Branch branch;
@@ -103,21 +108,29 @@ private void openAccount(String[] tokens){
     try {
         type = AccountType.valueOf(accountType);
     } catch (IllegalArgumentException e) {
-        System.out.println("Invalid account type!");
         return;
     }
+
+    
 
     try {
         branch = Branch.valueOf(branchType);
     } catch (IllegalArgumentException e) {
-        System.out.println("Invalid branch type!");
         return;
     }
 
     try {
         date = new Date(dob);
         if (!date.isValid()) {
-            System.out.println("Invalid date of birth!");
+            System.out.println("DOB invalid: " + dob + " is not a valid calendar date!");
+            return;
+        }
+        if (date.isTodayOrFuture()) {
+            System.out.println("DOB invalid: " + dob + " is today or a future date!");
+            return;
+        }
+        if (date.isUnder18()) {
+            System.out.println("DOB invalid: " + dob + " indicates the client is under 18!");
             return;
         }
     } catch (IllegalArgumentException e) {
@@ -125,7 +138,17 @@ private void openAccount(String[] tokens){
         return;
     }
 
+    if (type == AccountType.MONEYMARKET && depositAmount < 2000) {
+        System.out.println("Minimum of $2,000 to open a Money Market account.");
+        return;   
+    }
+
     Profile newPerson = new Profile(firstName, lastName, date);
+      // Check if the person already has an account of the same type
+      if (database.hasAccountOfType(newPerson, type)) {
+        System.out.println(firstName +" "+lastName +" already has a " + type.name().toLowerCase() + " account.");
+        return;
+    }
     AccountNumber accountNumber = new AccountNumber(branch, type);
     Account newAccount = new Account(accountNumber, newPerson, depositAmount);
     database.add(newAccount);

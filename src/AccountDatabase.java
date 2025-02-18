@@ -139,16 +139,120 @@ public class AccountDatabase {
         archive.print();
     }
 
-    public void printByBranch() {}
+    public void printByBranch() {
+        System.out.println("*List of accounts ordered by branch location (county, city).");
+        String[] counties = {"Mercer", "Middlesex", "Somerset"};
+        String[][] branches = {
+            {"PRINCETON"},
+            {"EDISON", "PISCATAWAY"},
+            {"BRIDGEWATER", "WARREN"}
+        };
 
-    public void printByHolder() {}
+        // Iterate through each county and branch to print accounts
+        for (int i = 0; i < counties.length; i++) {
+            String county = counties[i];
+            boolean countyPrinted = false;
 
-    public void printByType() {}
+            for (String branch : branches[i]) {
+                for (int j = 0; j < size; j++) {
+                    Account account = accounts[j];
+                    if (account != null && account.getNumber().getBranch().name().equals(branch)) {
+                        if (!countyPrinted) {
+                            System.out.println("County: " + county);
+                            countyPrinted = true;
+                        }
+                        System.out.println(account);
+                    }
+                }
+            }
+    }
+
+    System.out.println("*end of list.");
+
+    }
+
+    public void printByHolder() {
+        System.out.println("*List of accounts ordered by account holder and number.");
+
+    // Bubble sort accounts by holder's profile and account number
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            Account a1 = accounts[j];
+            Account a2 = accounts[j + 1];
+            if (a1 != null && a2 != null) {
+                int comparison = a1.getHolder().compareTo(a2.getHolder());
+                if (comparison > 0 || (comparison == 0 && a1.getNumber().compareTo(a2.getNumber()) > 0)) {
+                    // Swap accounts[j] and accounts[j + 1]
+                    Account temp = accounts[j];
+                    accounts[j] = accounts[j + 1];
+                    accounts[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Print sorted accounts
+    for (int i = 0; i < size; i++) {
+        if (accounts[i] != null) {
+            System.out.println(accounts[i]);
+        }
+    }
+
+    System.out.println("*end of list.");
+
+    }
+
+    public void printByType() {
+        System.out.println("*List of accounts ordered by account type and number.");
+
+        // Bubble sort accounts by account type and account number
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                Account a1 = accounts[j];
+                Account a2 = accounts[j + 1];
+                if (a1 != null && a2 != null) {
+                    int comparison = a1.getNumber().getType().compareTo(a2.getNumber().getType());
+                    if (comparison > 0 || (comparison == 0 && a1.getNumber().compareTo(a2.getNumber()) > 0)) {
+                        // Swap accounts[j] and accounts[j + 1]
+                        Account temp = accounts[j];
+                        accounts[j] = accounts[j + 1];
+                        accounts[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        // Print sorted accounts by type
+        AccountType currentType = null;
+        for (int i = 0; i < size; i++) {
+            if (accounts[i] != null) {
+                AccountType accountType = accounts[i].getNumber().getType();
+                if (currentType == null || !currentType.equals(accountType)) {
+                    currentType = accountType;
+                    System.out.println("Account Type: " + currentType.name());
+                }
+                System.out.println(accounts[i]);
+            }
+        }
+
+        System.out.println("*end of list.");
+
+    }
 
     public void printAllAccounts() {
-        System.out.println("All accounts in database:");
+        System.out.println("*List of accounts in the account database.");
         for (int i = 0; i < size; i++) {
             System.out.println(accounts[i]);
         }
+        System.out.println("*end of list.");
+    }
+    public boolean hasAccountOfType(Profile profile, AccountType type) {
+        for (int i = 0; i < size; i++) {
+            Account account = accounts[i];
+            if (account != null && account.getHolder().equals(profile) && account.getNumber().getType() == type) {
+                return true;
+            }
+        }
+        return false;
     }
 }

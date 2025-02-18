@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class AccountNumber implements Comparable<AccountNumber>
 {
-    private static final int SEED = 9999;
+    // private static final int SEED = 9999;
     private Branch branch;
     private AccountType type;
     private String number;
@@ -39,7 +39,7 @@ public class AccountNumber implements Comparable<AccountNumber>
 
     private String generateRandomNumber()
     {
-        Random random = new Random(SEED);
+        Random random = new Random();
         int MIN_RANDOM = 1000;
         int MAX_RANDOM = 9999;
         int randNum = random.nextInt((MAX_RANDOM - MIN_RANDOM) + 1) + MIN_RANDOM;

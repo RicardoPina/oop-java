@@ -2,6 +2,7 @@
  * represents a date with year, month, and day.
  * implements Comparable for sorting dates.
  * includes a method to check if a date is valid */
+import java.util.Calendar;
 import java.util.StringTokenizer;
 public class Date implements Comparable<Date>
 {
@@ -34,12 +35,24 @@ public class Date implements Comparable<Date>
         this.month = dateParts[0];
         this.day = dateParts[1];
         this.year = dateParts[2];
-
-        //int print = this.year;
-        if (!isValid()) { // Validate after parsing
-            System.out.println("DOB invalid: " + dob + "is not a valid calendar date!");
-        }
        }
+
+           public boolean isTodayOrFuture() {
+        Calendar today = Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
+        date.set(year, month - 1, day); // Calendar month is 0-based
+
+        return !date.before(today);
+    }
+
+    public boolean isUnder18() {
+        Calendar today = Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
+        date.set(year, month - 1, day); // Calendar month is 0-based
+
+        today.add(Calendar.YEAR, -18);
+        return date.after(today);
+    }
 
 
     private static int[] parseDate(String dateStr) { // Helper function for parsing
