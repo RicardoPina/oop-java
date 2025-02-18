@@ -1,5 +1,7 @@
 /**
  * Manages a database of accounts.
+ * Provides methods to add, remove, find, and print
+ * Also manages an archive of closed accounts.
  *
  * @author Ricardo Pina
  */
@@ -12,12 +14,22 @@ public class AccountDatabase {
     private static final int INITIAL_CAPACITY = 4;
     private static final int CAPACITY_INCREMENT = 4;
 
+    /**
+     * Constructor for the AccountDatabase class.
+     * Initializes the accounts array with an initial capacity.
+     */
     public AccountDatabase() {
         this.accounts = new Account[INITIAL_CAPACITY];
         this.size = 0;
         this.archive = new Archive();
     }
 
+    /**
+     * Finds the index of an account obj in the accounts array.
+     *
+     * @param account the account to find
+     * @return the index of the account in the array, or NOT_FOUND if not found
+     */
     private int find(Account account) {
         for (int i = 0; i < size; i++) {
             if (accounts[i] != null && accounts[i].equals(account)) {
@@ -26,7 +38,12 @@ public class AccountDatabase {
         }
         return NOT_FOUND;
     }
-
+    /**
+     * Finds the index of an account number in the accounts array.
+     *
+     * @param accountNumber the account number to find
+     * @return the index of the account in the array, or NOT_FOUND if not found
+     */
     private int find(AccountNumber accountNumber) {
         for (int i = 0; i < size; i++) {
             if (accounts[i] != null && accounts[i].getNumber().equals(accountNumber)) {
@@ -36,6 +53,9 @@ public class AccountDatabase {
         return NOT_FOUND;
     }
 
+    /**
+     * Grows the accounts array by the CAPACITY_INCREMENT.
+     */ 
     private void grow() {
         Account[] newAccounts = new Account[accounts.length + CAPACITY_INCREMENT];
         for (int i = 0; i < size; i++) {
@@ -44,10 +64,22 @@ public class AccountDatabase {
         accounts = newAccounts;
     }
 
+    /**
+     * Checks if the database contains a given account number.
+     *
+     * @param accountNumber the account number to find
+     * @return true if the account number is found, false otherwise
+     */
     public boolean contains(Account account) {
         return find(account) != NOT_FOUND;
     }
-
+    /**
+     * Adds a new account to the database.
+     * If the account number is already in the database, it will not be added.
+     *
+     * @param accountNumber the account number to find
+     * 
+     */
     public void add(Account account) {
         if (contains(account)) {
             return; // Don't add duplicates
@@ -58,6 +90,11 @@ public class AccountDatabase {
         accounts[size++] = account;
     }
 
+    /**
+     * Removes an account from the database.
+     *
+     * @param accountNumber the account number to remove
+     */
     public void removeAccount(AccountNumber accountNumber) {
         int index = find(accountNumber);
         if (index != NOT_FOUND) {
@@ -66,7 +103,11 @@ public class AccountDatabase {
             accounts[size] = null;
         }
     }
-
+    /**
+     * Removes an account from the database.
+     *
+     * @param account the account to remove
+     */
     public void removeAccount(Account account) {
         int index = find(account);
         if (index != NOT_FOUND) {
@@ -75,7 +116,9 @@ public class AccountDatabase {
             accounts[size] = null;
         }
     }
-
+    /*
+     * Returns the account with the given account number.
+     */
     public Account getAccount(AccountNumber accountNumber) {
         int index = find(accountNumber);
         if (index != NOT_FOUND) {
@@ -83,6 +126,13 @@ public class AccountDatabase {
         }
         return null;
     }
+
+    /**
+     * Returns the accounts associated to a given profile.
+     *
+     * @param profile the account number to find
+     * @return an array of accounts associated to the profile or an empty array if no matches are found
+     */
 
     public Account[] findAccountsByProfile(Profile profile) {
         int count = 0;
@@ -108,6 +158,15 @@ public class AccountDatabase {
         return matchingAccounts;
     }
 
+    /**
+     * Withdraws a given amount from an account.
+     * If the account is a money market account and the balance falls below $2000 
+     * the account is downgraded to a savings account.
+     *
+     * @param accountNumber the account number to withdraw from
+     * @param amount the amount to withdraw
+     * @return true if the withdrawal was successful, false otherwise
+     */
     public boolean withdraw(AccountNumber number, double amount) {
     Account account = getAccount(number);
     if (account != null) {
@@ -128,6 +187,13 @@ public class AccountDatabase {
     return false;
 }
 
+    /**
+     * Deposits a specified amount into an account.
+     *
+     * @param number The account number of the account to deposit into.
+     * @param amount The amount to deposit.
+     */
+
     public void deposit(AccountNumber number, double amount) {
         Account account = getAccount(number);
         if (account != null) {
@@ -135,6 +201,10 @@ public class AccountDatabase {
         }
     }
 
+    /**
+     * Prints the archive of closed accounts.
+     * If the database is empty, prints a message indicating that.
+     */
     public void printArchive() {
         if (size == 0) {
             System.out.println("Account Database is empty!");
@@ -142,7 +212,10 @@ public class AccountDatabase {
         }
         archive.print();
     }
-
+    /**
+     * Prints all accounts in the database, ordered by branch location (county, city).
+     * If the database is empty, prints a message indicating that.
+     */
     public void printByBranch() {
         if (size == 0) {
             System.out.println("Account Database is empty!");
@@ -178,7 +251,9 @@ public class AccountDatabase {
     System.out.println("*end of list.\n");
 
     }
-
+    /**
+     * Prints all accounts in the database, ordered by account holder and account number.
+     */
     public void printByHolder() {
         System.out.println("*List of accounts ordered by account holder and number.");
 
@@ -209,7 +284,10 @@ public class AccountDatabase {
     System.out.println("*end of list.");
 
     }
-
+    /**
+     * Prints all accounts in the database, ordered by account type and account number.
+     * If the database is empty, prints a message indicating that.
+     */
     public void printByType() {
         if (size == 0) {
             System.out.println("Account database is empty!");
@@ -250,7 +328,10 @@ public class AccountDatabase {
         System.out.println("*end of list.");
 
     }
-
+    /**
+     * Prints all accounts in the database.
+     * If the database is empty, prints a message indicating that.
+     */
     public void printAllAccounts() {
         if (size == 0) {
             System.out.println("Account Database is empty!");
@@ -262,7 +343,13 @@ public class AccountDatabase {
         }
         System.out.println("*end of list.\n");
     }
-    
+    /**
+     * Checks if a profile already has an account of a specific type.
+     *
+     * @param profile The profile to check.
+     * @param type The account type to check.
+     * @return True if the profile has an account of the specified type, false otherwise.
+     */
     public boolean hasAccountOfType(Profile profile, AccountType type) {
         for (int i = 0; i < size; i++) {
             Account account = accounts[i];

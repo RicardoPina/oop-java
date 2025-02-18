@@ -1,7 +1,10 @@
 /**
  * represents a date with year, month, and day.
  * implements Comparable for sorting dates.
- * includes a method to check if a date is valid */
+ * includes a method to check if a date is valid 
+ * 
+ * @author Andrew Salama
+ * */
 import java.util.Calendar;
 import java.util.StringTokenizer;
 public class Date implements Comparable<Date>
@@ -18,7 +21,9 @@ public class Date implements Comparable<Date>
     private static final int[] DAYS_IN_MONTH = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     /**
-     * constructor for the Date class */
+     * constructor for the Date class 
+     * 
+     * */
 
     public Date(int year, int month, int day)
     {
@@ -78,7 +83,8 @@ public class Date implements Comparable<Date>
     }
 
     /**
-     * checks if the date is a valid calendar date */
+     * checks if the date is a valid calendar date 
+     * */
 
     public boolean isValid()
     {
@@ -93,7 +99,8 @@ public class Date implements Comparable<Date>
     }
 
     /**
-     * determines if the year is a leap year */
+     * determines if the year is a leap year 
+     * */
 
     private boolean isLeapYear()
     {
@@ -109,7 +116,8 @@ public class Date implements Comparable<Date>
     }
 
     /**
-     * Compares this date with another date */
+     * Compares this date with another date 
+     * */
     @Override
     public int compareTo(Date other)
     {
@@ -125,7 +133,8 @@ public class Date implements Comparable<Date>
     }
 
     /**
-     * checks if two dates are equal */
+     * checks if two dates are equal 
+     * */
 
     @Override
     public boolean equals(Object obj)
@@ -137,7 +146,8 @@ public class Date implements Comparable<Date>
     }
 
     /**
-     * provides a string representation of the date */
+     * provides a string representation of the date 
+     * */
 
     @Override
     public String toString()

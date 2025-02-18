@@ -2,7 +2,10 @@
 
 /**
  * represents a bank account holder's profile, including first name, last name, and date of birth
- * implements Comparable for sorting profiles by last name, first name, and date of birth */
+ * implements Comparable for sorting profiles by last name, first name, and date of birth 
+ * 
+ * @author Andrew Salama
+ * */
 
 public class Profile implements Comparable<Profile>
 {

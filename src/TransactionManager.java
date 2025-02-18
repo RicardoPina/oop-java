@@ -1,22 +1,34 @@
 import java.util.Scanner;
 
+/**
+ * Manages transactions for a bank, including opening and closing accounts,
+ * depositing and withdrawing funds, and printing account information.
+ * 
+ * @author Ricardo Pina
+ */
 public class TransactionManager {
     private final AccountDatabase database = new AccountDatabase();
-    // Default constructor
+    /**
+     * Default constructor for {@code TransactionManager}.
+     */
     public TransactionManager(){
     }
-
+    /**
+     * Enum representing the valid commands that can be processed.
+     */
     enum Commands {
         O, C, D, W, P, PA, PB, PH, PT, Q
     }
-
+    /**
+     * Runs the transaction manager, continuously prompting the user for
+     * commands until the 'Q' command is entered.
+     */
     public void run() {
         System.out.println("Transaction Manager is running.");
         // start the scanner
         Scanner scanner = new Scanner(System.in);
         // initiate variable to store the input
         String input;
-
         // while the input is not q
         while(!(input = scanner.nextLine()).equals("Q")) {
             // tokenize input and store in "tokens"
@@ -29,7 +41,11 @@ public class TransactionManager {
         System.out.println("Transaction Manager terminated.");
         scanner.close();
     }
-
+    /*
+     * Processes the command based on the input.
+     * @param tokens An array of strings containing the command and its arguments.
+     * 
+     */
     private void processCommand(String[] tokens){
         String input = tokens[0].trim();
         Commands command;
@@ -61,22 +77,15 @@ public class TransactionManager {
                     break;
                 case PA:
                     database.printArchive();
-//
                     break;
                 case PB:
-//                    AccountDatabase.printByBranch();
-                    // System.out.println("Selected: Print branch-phabetical accounts");
                     database.printByBranch();
                     break;
                 case PH:
                     database.printByHolder();
-//                    AccountDatabase.printByHolder();
-                    // System.out.println("Selected: Print ordered by the account holder’s profile");
                     break;
                 case PT:
                     database.printByType();
-// AccountDatabase.printByType();
-                    // System.out.println("Selected: Print ordered by account type");
                     break;
                 case Q:
                     System.out.println("Transaction Manager is terminated\n");
@@ -86,6 +95,11 @@ public class TransactionManager {
             }
     }
 
+/**
+ * Opens an account after processing input.
+ *
+ * @param tokens An array of strings containing the account details.
+ */
 private void openAccount(String[] tokens){
     String accountType = tokens[1].trim().toUpperCase();
     String branchType = tokens[2].trim().toUpperCase();
@@ -161,6 +175,11 @@ private void openAccount(String[] tokens){
     System.out.println(type.name()+ " account " + newAccount.getNumber() + " has been opened.");
 }
 
+/**
+ * Closes an account after processing input.
+ *
+ * @param tokens An array of strings containing the account number or profile details.
+ */
 private void closeAccount(String[] tokens) {
     if (tokens.length < 2) {
         System.out.println("Missing data for closing account!");
@@ -204,6 +223,11 @@ private void closeAccount(String[] tokens) {
     }
 }
 
+/**
+ * Withdraws from an account after processing input.
+ *
+ * @param tokens An array of strings containing the account number and withdrawal amount.
+ */
 private void withdrawProcess(String[] tokens){
     String accountNumberString = tokens[1].trim();
     String amountString = tokens[2].trim();
@@ -240,6 +264,11 @@ private void withdrawProcess(String[] tokens){
     }
 }
 
+    /**
+     * Deposits into an account after processing input.
+     *
+     * @param tokens An array of strings containing the account number and deposit amount.
+     */
 private void depositProcess(String[] tokens){
     String accountNumberString = tokens[1].trim();
     String amountString = tokens[2].trim();

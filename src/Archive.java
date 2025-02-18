@@ -1,6 +1,6 @@
 /**
  * Represents an archive of closed accounts using a linked list.
- * @author [Your Name(s) Here]
+ * @author Ricardo Pina
  */
 public class Archive {
     private AccountNode first; // the head node of the linked list

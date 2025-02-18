@@ -1,6 +1,9 @@
 /**
  * enum representing different types of bank accounts
- * each account type has a unique 2-digit code */
+ * each account type has a unique 2-digit code 
+ * 
+ * @author Andrew Salama
+ * */
 
 public enum AccountType
 {

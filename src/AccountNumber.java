@@ -2,7 +2,10 @@
 import java.util.Random;
 /**
  * represents an account number composed of a branch code, account type, and a randomly generated 4-digit number.
- * implements Comparable to allow sorting based on account numbers */
+ * implements Comparable to allow sorting based on account numbers 
+ * 
+ * @author Andrew Salama
+ * */
 
 public class AccountNumber implements Comparable<AccountNumber>
 {

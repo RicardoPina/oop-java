@@ -1,6 +1,9 @@
 /**
  * Enum representing the branch locations of RU Bank.
- * each branch has a unique 3-digit branch code, city name, county, and zip code */
+ * each branch has a unique 3-digit branch code, city name, county, and zip code 
+ * 
+ * @author Andrew Salama
+ * */
 
 public enum Branch
 {

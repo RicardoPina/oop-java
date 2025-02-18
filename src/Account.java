@@ -1,6 +1,9 @@
 /**
  * represents a bank account with a unique account number, account holder profile, and balance.
- * implements Comparable to allow sorting based on account number */
+ * implements Comparable to allow sorting based on account number 
+ * 
+ * @author Andrew Salama
+ * */
 
 public class Account implements Comparable<Account>
 {
